@@ -1,30 +1,41 @@
-const amount = document.getElementById("amount");
-const fromCurrency = document.getElementById("fromCurrency");
-const toCurrency = document.getElementById("toCurrency");
-const convert = document.getElementById("convert");
-const result = document.getElementById("result");
+const words = [
+    "Developer",
+    "Designer",
+    "Freelancer",
+    "Programmer"
+];
 
-convert.addEventListener("click", () => {
+let wordIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
 
-    let amt = Number(amount.value);
-    let from = fromCurrency.value;
-    let to = toCurrency.value;
+const typingElement = document.getElementById("typing");
 
-    let convertedAmount;
+function typeEffect() {
+    const currentWord = words[wordIndex];
 
-    if(from === "USD" && to === "INR"){
-        convertedAmount = amt * 83;
+    if (!isDeleting) {
+        typingElement.textContent =
+            currentWord.substring(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex === currentWord.length) {
+            isDeleting = true;
+            setTimeout(typeEffect, 1000);
+            return;
+        }
+    } else {
+        typingElement.textContent =
+            currentWord.substring(0, charIndex - 1);
+        charIndex--;
+
+        if (charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+        }
     }
-    else if(from === "INR" && to === "USD"){
-        convertedAmount = amt / 83;
-    }
-    else if(from === to){
-        convertedAmount = amt;
-    }
-    else{
-        convertedAmount = amt * 1;
-    }
 
-    result.innerText = 
-    `${amt} ${from} = ${convertedAmount.toFixed(2)} ${to}`;
-});
+    setTimeout(typeEffect, isDeleting ? 100 : 150);
+}
+
+typeEffect();
