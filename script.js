@@ -1,41 +1,20 @@
-const words = [
-    "Developer",
-    "Designer",
-    "Freelancer",
-    "Programmer"
-];
+const countdown = document.getElementById("countdown");
 
-let wordIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
+const newYear = new Date("January 1, 2027 00:00:00").getTime();
 
-const typingElement = document.getElementById("typing");
+setInterval(() => {
+    const now = new Date().getTime();
+    const distance = newYear - now;
 
-function typeEffect() {
-    const currentWord = words[wordIndex];
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    if (!isDeleting) {
-        typingElement.textContent =
-            currentWord.substring(0, charIndex + 1);
-        charIndex++;
+    countdown.innerHTML =
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-        if (charIndex === currentWord.length) {
-            isDeleting = true;
-            setTimeout(typeEffect, 1000);
-            return;
-        }
-    } else {
-        typingElement.textContent =
-            currentWord.substring(0, charIndex - 1);
-        charIndex--;
-
-        if (charIndex === 0) {
-            isDeleting = false;
-            wordIndex = (wordIndex + 1) % words.length;
-        }
+    if(distance < 0){
+        countdown.innerHTML = "🎊 HAPPY NEW YEAR! 🎊";
     }
-
-    setTimeout(typeEffect, isDeleting ? 100 : 150);
-}
-
-typeEffect();
+}, 1000);
