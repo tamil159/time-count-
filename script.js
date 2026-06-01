@@ -1,20 +1,33 @@
-const countdown = document.getElementById("countdown");
+function calculateBMI() {
 
-const newYear = new Date("January 1, 2027 00:00:00").getTime();
+    let height = document.getElementById("height").value;
+    let weight = document.getElementById("weight").value;
 
-setInterval(() => {
-    const now = new Date().getTime();
-    const distance = newYear - now;
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    countdown.innerHTML =
-        `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-    if(distance < 0){
-        countdown.innerHTML = "🎊 HAPPY NEW YEAR! 🎊";
+    if(height === "" || weight === ""){
+        alert("Enter Height and Weight");
+        return;
     }
-}, 1000);
+
+    let bmi = weight / ((height / 100) * (height / 100));
+
+    document.getElementById("result").innerHTML =
+        "BMI : " + bmi.toFixed(2);
+
+    let condition = "";
+
+    if(bmi < 18.5){
+        condition = "Underweight";
+    }
+    else if(bmi < 25){
+        condition = "Normal Weight";
+    }
+    else if(bmi < 30){
+        condition = "Overweight";
+    }
+    else{
+        condition = "Obese";
+    }
+
+    document.getElementById("condition").innerHTML =
+        "Weight Condition : " + condition;
+}
